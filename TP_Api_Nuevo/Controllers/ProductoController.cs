@@ -124,6 +124,7 @@ namespace TP_Api_Nuevo.Controllers
             }
         }
 
+
         // ELIMINAR PRODUCTO
         [HttpDelete]
         [Route("api/Producto/{id}")]
@@ -135,6 +136,10 @@ namespace TP_Api_Nuevo.Controllers
 
             try
             {
+                
+                if (negocio.TieneImagenes(id))
+                    return "No se puede eliminar el producto porque tiene imágenes asociadas.";
+
                 negocio.Eliminar(id);
                 return "Producto eliminado correctamente.";
             }

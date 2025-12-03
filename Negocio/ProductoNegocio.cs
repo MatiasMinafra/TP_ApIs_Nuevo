@@ -237,5 +237,34 @@ namespace Negocio
             List<Producto> lista = Listar();
             return lista.Find(x => x.Id == id);
         }
+
+        public bool TieneImagenes(int idProducto)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.SetearConsulta("SELECT COUNT(*) AS Cantidad FROM IMAGENES WHERE IdArticulo = @id");
+                datos.SetearParametro("@id", idProducto);
+                datos.EjecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    int cantidad = (int)datos.Lector["Cantidad"];
+                    return cantidad > 0;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+
+                return true;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
     }
 }
